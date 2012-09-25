@@ -1,5 +1,4 @@
 class Subscription
-  @agenda = Hash.new
 
   def add_appointment(subscription,user)
     p "Adding appointment"

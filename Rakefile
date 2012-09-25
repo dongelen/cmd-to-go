@@ -1,12 +1,7 @@
 $:.unshift("/Library/RubyMotion/lib")
 
 require 'motion/project'
-require 'formotion'
 require 'bubble-wrap/http'
-require 'motion-cocoapods'
-require 'motion-testflight'
-require 'motion-addressbook'
-require 'motion-hpple'
 
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
@@ -20,12 +15,10 @@ Motion::Project::App.setup do |app|
     
   app.frameworks += ['Security', 'MessageUI']
   # 
-  # Motion::Project::App.setup do |app|
-  #   app.testflight.sdk = 'vendor/TestFlightSDK'
-  #   app.testflight.api_token = '233fe437aeb256444cc6be0d58c6513a_NDY2NjUwMjAxMi0wNi0wMSAwODoxMjo0OS4yMTQwMDM'
-  #   app.testflight.team_token = 'd58a413e7021d4186825b4eaf8e8a831_OTU4MTIyMDEyLTA4LTI1IDE2OjMxOjUwLjYwODQxNA'
-  #   app.testflight.distribution_lists = ['Beta list']
-  # end 
-  # 
+
+  app.testflight.sdk = 'vendor/TestFlightSDK'
+  app.testflight.api_token = '233fe437aeb256444cc6be0d58c6513a_NDY2NjUwMjAxMi0wNi0wMSAwODoxMjo0OS4yMTQwMDM'
+  app.testflight.team_token = 'd58a413e7021d4186825b4eaf8e8a831_OTU4MTIyMDEyLTA4LTI1IDE2OjMxOjUwLjYwODQxNA'
+  app.testflight.distribution_lists = ['Beta list']
 
 end
