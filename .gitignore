@@ -1,5 +1,6 @@
 .DS_Store
 .repl_history
+.dat*
 Gemfile.lock
 build-*
 build

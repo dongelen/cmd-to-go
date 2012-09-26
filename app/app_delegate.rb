@@ -27,11 +27,15 @@ class AppDelegate
     @allStudents = StudentsViewController.alloc.initWithStyle UITableViewStylePlain
     @student_nav_controller = UINavigationController.alloc.initWithRootViewController(@allStudents)
 
-    # @tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
-    # @tab_controller.viewControllers = [@student_nav_controller, @group_nav_controller]
+    @subscriptionController = SubscriptionController.alloc.initWithStyle UITableViewStylePlain
     
-    # @window.rootViewController = @tab_controller        
-    @window.rootViewController = @student_nav_controller
+
+
+    @tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
+    @tab_controller.viewControllers = [@student_nav_controller, @subscriptionController]
+    
+    @window.rootViewController = @tab_controller        
+    # @window.rootViewController = @student_nav_controller
     @window.makeKeyAndVisible
   end
 
