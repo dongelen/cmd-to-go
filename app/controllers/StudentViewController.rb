@@ -1,4 +1,4 @@
-class StudentViewController < UIViewController
+class StudentViewController < PullRefreshTableViewController
   def viewDidLoad
     self.title = "Bla"
     
@@ -14,7 +14,7 @@ class StudentViewController < UIViewController
 
     @mobile = UITextField.alloc.initWithFrame ([[110,70],[180,20]])  
     @mobile.textColor=UIColor.blackColor
-    @mobile.label = "Bla"    
+    @mobile.label = ""    
     
     @image = UIImageView.alloc.initWithFrame([[10,10], [100,100]]) 
     layer = @image.layer
@@ -106,24 +106,28 @@ class StudentViewController < UIViewController
     loadImage(s[:avatar_link])
     @name.label = makeName(s)
     @email.label = s[:email]
-    loadPhonenumber(s)
+    # @mobile.label = s[:mobile]
+    loadExtraInfo(s)
     p s
     # p = AddressBook::Person.find_by_last_name(s[:lastname])
     # @telnumber.label = p[:first_name] if p
 
   end
   
-  def loadPhonenumber(student)
-    BubbleWrap::HTTP.get(student[:web_link]) do |response|  
-      parser = Hpple.HTML(response.body.to_str)
-      allStuff = parser.xpath("//div[@class='userinfo']//div[@class='general_info_value']")
-      p $allStuff
-      parser.xpath("//div[@class='userinfo']//div[@class='general_info_value']").each do |value|
-        v_str = value.to_s
-        p v_str
-        @phonenumber = v_str if (v_str=~ /06/)== 0
+  def loadExtraInfo(student)
+    BubbleWrap::HTTP.get("http://www.cmd-leeuwarden.nl/api/users/user.json?userid=#{student[:userid]}", User.current.to_header) do |response|  
+      if response.ok?
+        data = BubbleWrap::JSON.parse(response.body.to_str)      
+        results = data[:results]
+        p results
+        $r = results
+        
+        @mobile.label = results[:userinfo][:mobile]
+        @phonenumber = results[:userinfo][:mobile]
+        
+        $p = @phonenumber
       end
-      @mobile.label = @phonenumber
+      
       # student[:phonenumber] = phonenumber
     end
     
