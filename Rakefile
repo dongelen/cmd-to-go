@@ -14,7 +14,7 @@ Motion::Project::App.setup do |app|
   app.codesign_certificate = "Raymond van Dongelen"
   app.pods do
     pod 'PullToRefresh'
-    pod 'SVProgressHUD', '~>0.7'
+    # pod 'SVProgressHUD', '~>0.7'
   end
     
   app.frameworks += ['Security', 'MessageUI', 'QuartzCore']

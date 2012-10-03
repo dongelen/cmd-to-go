@@ -1,4 +1,4 @@
-class StudentViewController < PullRefreshTableViewController
+class StudentViewController < UIViewController
   def viewDidLoad
     self.title = "Bla"
     

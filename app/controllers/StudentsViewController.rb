@@ -1,7 +1,9 @@
 class StudentsViewController < UITableViewController 
   def initWithNibName(name, bundle: bundle)
     super
-    self.tabBarItem = UITabBarItem.alloc.initWithTabBarSystemItem(UITabBarSystemItemBookmarks, tag: 1)
+    tabBarItem = self.tabBarItem
+    tabBarItem.image = UIImage.imageNamed "112-group"
+    tabBarItem.title = "Studenten"
     self    
   end
   

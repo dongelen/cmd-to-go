@@ -23,9 +23,9 @@ class User
   def login(&block)
     @after_login=block
 
-    SVProgressHUD.show    
+    # SVProgressHUD.show    
     BubbleWrap::HTTP.get("http://www.cmd-leeuwarden.nl/api/users/authenticate.json", to_header) do |response|
-      SVProgressHUD.dismiss
+      # SVProgressHUD.dismiss
       if response.ok?
         data = BubbleWrap::JSON.parse(response.body.to_str)      
         self.succesfull_login = data[:results] == false ? false : true

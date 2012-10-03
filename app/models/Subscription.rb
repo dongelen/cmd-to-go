@@ -32,7 +32,6 @@ class Subscription
     @subscriptions[dname]
   end
 
-
   # private
     def whenFinishedCallBlock
       p "To load verlaagt naar #{@toLoad}"
@@ -113,8 +112,16 @@ class Subscription
     
     end
   
+    def midnight_today
+      date = NSDate.date
+      calendar = NSCalendar.autoupdatingCurrentCalendar
+      preservedComponents = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
+      calendar.dateFromComponents(calendar.components(preservedComponents, fromDate:date))
+      
+    end
+  
     def find_current_subscriptions(subscriptions)
-      now = Time.now
+      now = midnight_today
       subscriptions.each do |subscription|
         # df = NSDateFormatter.alloc.init
         # df.setDateFormat "yyyy-MM-dd HH:mm:ss"
@@ -142,8 +149,6 @@ class Subscription
       BubbleWrap::HTTP.get("http://www.cmd-leeuwarden.nl/api/users/user.json?userid=#{id}",  User.current.to_header) do |response|
         if response.ok?
           data = BubbleWrap::JSON.parse(response.body.to_str)              
-          p subscription
-          p data[:results][:displayname]
         
           add_appointment subscription, data[:results]
         elsif response.status_code.to_s =~ /40\d/
