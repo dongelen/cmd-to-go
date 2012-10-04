@@ -26,11 +26,11 @@ class AppDelegate
     @student_nav_controller = UINavigationController.alloc.initWithRootViewController(@allStudents)
 
     @subscriptionController = SubscriptionController.alloc.initWithStyle UITableViewStylePlain
-    
+    @subscription_nav_controller = UINavigationController.alloc.initWithRootViewController(@subscriptionController)
 
 
     @tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
-    @tab_controller.viewControllers = [@student_nav_controller, @subscriptionController]
+    @tab_controller.viewControllers = [@student_nav_controller, @subscription_nav_controller]
     
     @window.rootViewController = @tab_controller        
     # @window.rootViewController = @student_nav_controller

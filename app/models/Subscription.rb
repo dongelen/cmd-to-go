@@ -10,8 +10,8 @@ class Subscription
     @blockToCallAfterLoad = afterLoad
     @subscriptions = Hash.new
     # first of all, get subscription 
-    # category_ids =["99", "100,"101"]
-    category_ids =["101"]
+    category_ids =["99", "100", "101"]
+    # category_ids =["101"]
     
     @toLoad = 1        
     category_ids.each do |id|

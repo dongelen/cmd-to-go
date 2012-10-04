@@ -62,7 +62,20 @@ class SubscriptionController < UITableViewController
     subscription= day_subscriptions[indexPath.row]
     
     SubscriptionCell.cellForSubscription(subscription, inTableView:tableView)
-  end                 
+  end      
+  
+  def tableView(tableView, didSelectRowAtIndexPath:indexPath)
+    dn = @subscription.day_name_for indexPath.section    
+    day_subscriptions = @subscription.subscriptions_for_dayname(dn)
+    subscription= day_subscriptions[indexPath.row]
+    p subscription[:user]
+    studentView = StudentViewController.alloc.init
+    
+    self.navigationController.pushViewController(studentView, animated:true)
+    studentView.student=subscription[:user]
+    
+  end  
+             
   
   # Delegate voor tableview pull to refresh
 
