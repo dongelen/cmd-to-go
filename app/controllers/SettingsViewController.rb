@@ -1,9 +1,11 @@
-class SettingsViewController < UIViewController
+class SettingsViewController 
   def initWithNibName(name, bundle: bundle)        
-    tabBarItem = self.tabBarItem
+    screen = create_dialog
+
+    tabBarItem = screen.tabBarItem
     tabBarItem.image = UIImage.imageNamed "19-gear"
     tabBarItem.title = "Instellingen"
-    self
+    screen
   end
   
   def viewDidLoad
@@ -21,6 +23,7 @@ class SettingsViewController < UIViewController
         label title:"Ingelogd als", value:User.current.username
         button title:"Log uit" do
           User.current.logout
+          App.shared.delegate.logout
         end
       
       end
@@ -28,9 +31,8 @@ class SettingsViewController < UIViewController
 
     end
     
-    root.bindToObject({"empty" => [], "something" => ["first", "second"]})
+    # root.bindToObject({"empty" => [], "something" => ["first", "second"]})
     
     navigation = RMDialogController.controllerWithNavigationForRoot(root)
-    self.presentModalViewController(navigation, animated:false)
   end     
 end
