@@ -12,6 +12,13 @@ class User
     self.succesfull_login
   end
   
+  def logout
+    self.username= nil
+    self.password= nil
+    self.succesfull_login = false
+    save
+  end
+  
   def save
     App::Persistence[:username] = self.username
     App::Persistence[:password] = self.password
@@ -23,9 +30,9 @@ class User
   def login(&block)
     @after_login=block
 
-    # SVProgressHUD.show    
+    WaitScreen.startWait
     BubbleWrap::HTTP.get("http://www.cmd-leeuwarden.nl/api/users/authenticate.json", to_header) do |response|
-      # SVProgressHUD.dismiss
+      WaitScreen.stopWait
       if response.ok?
         data = BubbleWrap::JSON.parse(response.body.to_str)      
         self.succesfull_login = data[:results] == false ? false : true

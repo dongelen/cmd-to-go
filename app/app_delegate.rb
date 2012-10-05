@@ -18,7 +18,6 @@ class AppDelegate
   
 
   def showSecondScreen
-
     @allGroups = GroupTableView.alloc.initWithStyle UITableViewStylePlain  
     @group_nav_controller = UINavigationController.alloc.initWithRootViewController(@allGroups)
 
@@ -28,12 +27,12 @@ class AppDelegate
     @subscriptionController = SubscriptionController.alloc.initWithStyle UITableViewStylePlain
     @subscription_nav_controller = UINavigationController.alloc.initWithRootViewController(@subscriptionController)
 
+    @settingsController = SettingsViewController.alloc.initWithNibName(nil, bundle:nil)
 
     @tab_controller = UITabBarController.alloc.initWithNibName(nil, bundle: nil)
-    @tab_controller.viewControllers = [@student_nav_controller, @subscription_nav_controller]
+    @tab_controller.viewControllers = [@student_nav_controller, @subscription_nav_controller, @settingsController]
     
     @window.rootViewController = @tab_controller        
-    # @window.rootViewController = @student_nav_controller
     @window.makeKeyAndVisible
   end
 
@@ -52,6 +51,10 @@ class AppDelegate
         showLogin
       end
     end    
+  end
+  
+  def logout
+    showLogin
   end
 
 

@@ -34,13 +34,10 @@ class SubscriptionController < UITableViewController
     @subscription.day_name_for section
   end
   
-  def tableView(tableView, numberOfRowsInSection:section)
-    @sections[section] ? @sections[section].size : 0
-  end      
 
   def tableView(tableView, numberOfRowsInSection:section)  
-    dn = @subscription.day_name_for section
-     @subscription.subscriptions_for_dayname(dn).count
+    p "Gettint section #{section}"
+    @subscription.subscriptions_for_daynumber(section).count
   end      
 
   def refresh
@@ -57,23 +54,20 @@ class SubscriptionController < UITableViewController
   end
   
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    dn = @subscription.day_name_for indexPath.section    
-    day_subscriptions = @subscription.subscriptions_for_dayname(dn)
+    day_subscriptions = @subscription.subscriptions_for_daynumber(indexPath.section)
     subscription= day_subscriptions[indexPath.row]
     
     SubscriptionCell.cellForSubscription(subscription, inTableView:tableView)
   end      
   
-  def tableView(tableView, didSelectRowAtIndexPath:indexPath)
-    dn = @subscription.day_name_for indexPath.section    
-    day_subscriptions = @subscription.subscriptions_for_dayname(dn)
+  def tableView(tableView, didSelectRowAtIndexPath:indexPath)    
+    day_subscriptions = @subscription.subscriptions_for_daynumber(indexPath.section)
     subscription= day_subscriptions[indexPath.row]
     p subscription[:user]
     studentView = StudentViewController.alloc.init
     
     self.navigationController.pushViewController(studentView, animated:true)
-    studentView.student=subscription[:user]
-    
+    studentView.student=subscription[:user]    
   end  
              
   

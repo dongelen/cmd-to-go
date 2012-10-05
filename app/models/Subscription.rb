@@ -7,6 +7,8 @@ class Subscription
   end
   
   def load(&afterLoad)
+    WaitScreen.startWait
+    
     @blockToCallAfterLoad = afterLoad
     @subscriptions = Hash.new
     # first of all, get subscription 
@@ -25,18 +27,36 @@ class Subscription
   end
   
   def day_name_for(d)
-    @subscriptions.keys[d].to_s
+    @subscriptions.keys[d].dag_naam
   end
   
-  def subscriptions_for_dayname(dname)
-    @subscriptions[dname]
+  def subscriptions_for_daynumber(dnumber)
+    @subscriptions[@subscriptions.keys[dnumber]]
   end
 
   # private
     def whenFinishedCallBlock
       p "To load verlaagt naar #{@toLoad}"
-      @blockToCallAfterLoad.call if @toLoad <= 0
+      readyLoadingEverything if @toLoad <= 0
     end
+    
+    def readyLoadingEverything
+      # Reorder the hash zo dat de dagen in de juiste volgorde staan
+      @subscriptions=Hash[@subscriptions.sort]
+      $s = @subscriptions
+      @subscriptions.each do |k,apps|
+        p "Voor sort"
+        p @subscriptions[k]
+        @subscriptions[k]= apps.sort_by {|v| v[:subscription]}
+        p "Na sort"
+        p @subscriptions[k]
+        
+      end
+      WaitScreen.stopWait
+      
+      @blockToCallAfterLoad.call 
+    end
+    
     
     def finishedLoadingElement
       @toLoad-= 1
@@ -49,17 +69,19 @@ class Subscription
     end
   
     def add_appointment(subscription,user)
-      d = get_start_date_from_subscription(subscription)
+      d = get_start_time_from_subscription(subscription)
     
-      @subscriptions[d.dag_naam] ||= Array.new
-      p "Adding app"
-      p subscription
       
+      start_time = get_start_time_from_subscription(subscription)
       start_date = get_start_date_from_subscription(subscription)
+
+      p "Adding app"
       p start_date
-      @subscriptions[d.dag_naam] << {:subscripton=>start_date, :user=>user}
       
+      @subscriptions[start_date] ||= Array.new
+      @subscriptions[start_date] << {:subscription=>start_time, :user=>user}
       
+      $s= subscription
       $ss = @subscriptions
     end
 
@@ -105,29 +127,33 @@ class Subscription
       end  
     end
   
+    def get_start_time_from_subscription (subscription)
+      df = NSDateFormatter.alloc.init
+      df.setDateFormat "yyyy-MM-dd HH:mm:ss"
+      df.dateFromString(subscription[:startdate])    
+    end
+
     def get_start_date_from_subscription (subscription)
       df = NSDateFormatter.alloc.init
       df.setDateFormat "yyyy-MM-dd HH:mm:ss"
-      df.dateFromString(subscription[:startdate])
-    
+      date = df.dateFromString(subscription[:startdate])    
+      calendar = NSCalendar.autoupdatingCurrentCalendar
+      preservedComponents = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
+      calendar.dateFromComponents(calendar.components(preservedComponents, fromDate:date))            
     end
+
   
     def midnight_today
       date = NSDate.date
       calendar = NSCalendar.autoupdatingCurrentCalendar
       preservedComponents = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
-      calendar.dateFromComponents(calendar.components(preservedComponents, fromDate:date))
-      
+      calendar.dateFromComponents(calendar.components(preservedComponents, fromDate:date))      
     end
   
     def find_current_subscriptions(subscriptions)
       now = midnight_today
       subscriptions.each do |subscription|
-        # df = NSDateFormatter.alloc.init
-        # df.setDateFormat "yyyy-MM-dd HH:mm:ss"
-        # start_date= df.dateFromString(subscription[:startdate])
-        # 
-        start_date=get_start_date_from_subscription(subscription)
+        start_date=get_start_time_from_subscription(subscription)
 
         # p subscription[:subscribers][0][:userid]
 

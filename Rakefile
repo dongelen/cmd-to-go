@@ -13,8 +13,8 @@ Motion::Project::App.setup do |app|
   app.provisioning_profile = "/Users/dongelen/Library/MobileDevice/Provisioning Profiles/cmd_to_go.mobileprovision"
   app.codesign_certificate = "Raymond van Dongelen"
   app.pods do
-    pod 'PullToRefresh'
-    # pod 'SVProgressHUD', '~>0.7'
+    pod 'SVProgressHUD', '~>0.7'
+    pod 'QuickDialog'
   end
     
   app.frameworks += ['Security', 'MessageUI', 'QuartzCore']
