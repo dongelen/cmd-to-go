@@ -10,16 +10,22 @@ class SubscriptionController < UITableViewController
   end
   
   def viewDidAppear(animated)
-    @refreshHeaderView ||= begin
-      rhv = RefreshTableHeaderView.alloc.initWithFrame(CGRectMake(0, 0 - self.tableView.bounds.size.height, self.tableView.bounds.size.width, self.tableView.bounds.size.height))
-      rhv.delegate = self
-      rhv.refreshLastUpdatedDate    
-      tableView.addSubview(rhv)
-      
-      $t = self
-      rhv
-    end 
+    # @refreshHeaderView ||= begin
+    #   rhv = RefreshTableHeaderView.alloc.initWithFrame(CGRectMake(0, 0 - self.tableView.bounds.size.height, self.tableView.bounds.size.width, self.tableView.bounds.size.height))
+    #   rhv.delegate = self
+    #   rhv.refreshLastUpdatedDate    
+    #   tableView.addSubview(rhv)
+    #   
+    #   $t = self
+    #   rhv
+    # end 
+    # 
+    @refreshControl = UIRefreshControl.alloc.init
+    @refreshControl.addTarget self, action:'refresh', forControlEvents:UIControlEventValueChanged
+    self.refreshControl = @refreshControl
   end  
+
+  
   
   def viewDidLoad
     self.title = "Afspraken"
@@ -41,14 +47,13 @@ class SubscriptionController < UITableViewController
   end      
 
   def refresh
-    p "Refresh"
     @loading = true
 
     @subscription.load do
       @last_load = Time.now
       self.tableView.reloadData
       @loading = false
-      @refreshHeaderView.refreshScrollViewDataSourceDidFinishLoading(self.tableView)      
+      @refreshControl.endRefreshing
     end
 
   end
@@ -70,30 +75,5 @@ class SubscriptionController < UITableViewController
     studentView.student=subscription[:user]    
   end  
              
-  
-  # Delegate voor tableview pull to refresh
-
-  def scrollViewDidScroll(scrollView)
-    @refreshHeaderView.refreshScrollViewDidScroll(scrollView)
-  end
-  
-  def scrollViewDidEndDragging(scrollView, willDecelerate:decelerate)
-    @refreshHeaderView.refreshScrollViewDidEndDragging(scrollView)
-  end
-
-  
-  def refreshTableHeaderDataSourceLastUpdated(sender)
-    @last_load
-  end        
-  
-  def refreshTableHeaderDataSourceIsLoading(sender)
-    p "called 2"
-    @loading
-  end
-  
-  def refreshTableHeaderDidTriggerRefresh (sender)
-    p "Called"
-    refresh
-  end
   
 end
