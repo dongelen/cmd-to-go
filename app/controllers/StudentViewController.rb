@@ -1,20 +1,17 @@
 class StudentViewController < UIViewController
   def viewDidLoad
-    self.title = "Bla"
+    self.title = ""
     
     self.view.setBackgroundColor UIColor.whiteColor
-    @name = UITextField.alloc.initWithFrame ([[110,10],[180,20]])  
-    @name.textColor=UIColor.blackColor
-    @name.label = "Bla"
+    @name = UILabel.alloc.initWithFrame ([[115,10],[180,20]])  
+    @name.text = ""
 
 
-    @email = UITextField.alloc.initWithFrame ([[110,40],[180,20]])  
-    @email.textColor=UIColor.blackColor
-    @email.label = "Bla"    
+    @email = UILabel.alloc.initWithFrame ([[115,40],[180,20]])  
+    @email.text = ""    
 
-    @mobile = UITextField.alloc.initWithFrame ([[110,70],[180,20]])  
-    @mobile.textColor=UIColor.blackColor
-    @mobile.label = ""    
+    @mobile = UILabel.alloc.initWithFrame ([[115,70],[180,20]])  
+    @mobile.text = ""    
     
     @image = UIImageView.alloc.initWithFrame([[10,10], [100,100]]) 
     layer = @image.layer
@@ -61,9 +58,18 @@ class StudentViewController < UIViewController
       sendMessage "We hebben elkaar al een tijdje niet gesproken, kun je een afspraak met me maken op de cmd website?"
     end    
 
+
+    @message2 = UIButton.buttonWithType UIButtonTypeRoundedRect
+    @message2.frame= [[10,320],[280,50]]
+    @message2.setTitle "Bericht", forState:UIControlStateNormal
+    @message2.when(UIControlEventTouchUpInside) do
+      sendMessage ""
+    end    
+
     
     self.view.addSubview @message
     self.view.addSubview @message1
+    self.view.addSubview @message2
 
 
   end
@@ -104,13 +110,10 @@ class StudentViewController < UIViewController
 
   def student=(s)
     loadImage(s[:avatar_link])
-    @name.label = makeName(s)
-    @email.label = s[:email]
-    # @mobile.label = s[:mobile]
+    self.title = makeName(s)
+    @name.text = makeName(s)
+    @email.text = s[:email]
     loadExtraInfo(s)
-    p s
-    # p = AddressBook::Person.find_by_last_name(s[:lastname])
-    # @telnumber.label = p[:first_name] if p
 
   end
   
@@ -119,17 +122,12 @@ class StudentViewController < UIViewController
       if response.ok?
         data = BubbleWrap::JSON.parse(response.body.to_str)      
         results = data[:results]
-        p results
-        $r = results
         
-        @mobile.label = results[:userinfo][:mobile]
+        @mobile.text = results[:userinfo][:mobile]
         @phonenumber = results[:userinfo][:mobile]
         
-        $p = @phonenumber
       end
-      
-      # student[:phonenumber] = phonenumber
-    end
+      end
     
   end
   

@@ -32,14 +32,22 @@ class StudentsViewController < UITableViewController
       @sections[2] = d3[:results]      
       view.reloadData  
     end
+    
+    # Stagiairs
+    BubbleWrap::HTTP.get("http://www.cmd-leeuwarden.nl/api/userlists/users.json?category=Stagiairs") do |response|
+      d4 = BubbleWrap::JSON.parse(response.body.to_str)      
+      @sections[3] = d4[:results]      
+      view.reloadData  
+    end
+
   end
 
   def numberOfSectionsInTableView(tableView)
-    3
+    4
   end
   
   def tableView(tableView, titleForHeaderInSection:section)
-    ["Afstuderen vakdocent", "Afstudeermentor", "Mentor"][section]
+    ["Afstuderen vakdocent",  "Afstudeermentor", "Mentor", "Stagairs"][section]
   end
   
   def tableView(tableView, numberOfRowsInSection:section)

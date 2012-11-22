@@ -10,16 +10,6 @@ class SubscriptionController < UITableViewController
   end
   
   def viewDidAppear(animated)
-    # @refreshHeaderView ||= begin
-    #   rhv = RefreshTableHeaderView.alloc.initWithFrame(CGRectMake(0, 0 - self.tableView.bounds.size.height, self.tableView.bounds.size.width, self.tableView.bounds.size.height))
-    #   rhv.delegate = self
-    #   rhv.refreshLastUpdatedDate    
-    #   tableView.addSubview(rhv)
-    #   
-    #   $t = self
-    #   rhv
-    # end 
-    # 
     @refreshControl = UIRefreshControl.alloc.init
     @refreshControl.addTarget self, action:'refresh', forControlEvents:UIControlEventValueChanged
     self.refreshControl = @refreshControl
@@ -42,7 +32,6 @@ class SubscriptionController < UITableViewController
   
 
   def tableView(tableView, numberOfRowsInSection:section)  
-    p "Gettint section #{section}"
     @subscription.subscriptions_for_daynumber(section).count
   end      
 

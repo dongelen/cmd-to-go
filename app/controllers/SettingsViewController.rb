@@ -16,7 +16,6 @@ class SettingsViewController
   
   def create_dialog    
     root = RMDialog.create(title:"Instellingen", grouped:true) do
-      url = "http://www.apple.com"
       
       # First Section with Name
       section(name: "Je gegevens") do        
@@ -26,8 +25,7 @@ class SettingsViewController
           App.shared.delegate.logout
         end
       
-      end
-      
+      end      
 
     end
     
