@@ -9,15 +9,19 @@ Bundler.require
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'cmd to go'
-  app.identifier="nl.cmd-leeuwarden.cmd-to-go"
+  app.identifier = "nl.nhl.cmd.cmd-to-go"
+
   app.provisioning_profile = "/Users/dongelen/Library/MobileDevice/Provisioning Profiles/cmd_to_go.mobileprovision"
   app.codesign_certificate = "Raymond van Dongelen"
   app.pods do
+    # pod 'TapkuLibrary'
     pod 'SVProgressHUD', '~>0.7'
     pod 'QuickDialog'
   end
     
-  app.frameworks += ['Security', 'MessageUI', 'QuartzCore']
+  app.frameworks += [ 'Security', 'MessageUI', 'QuartzCore']
+  app.frameworks += ['Social', 'Twitter']
+
   # 
 
 

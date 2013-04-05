@@ -6,9 +6,15 @@ class SubscriptionController < UITableViewController
     tabBarItem = self.tabBarItem
     tabBarItem.image = UIImage.imageNamed "83-calendar"
     tabBarItem.title = "Afspraken"
+
+    addButton = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAdd, target:self, action:"addDates")
+
+    self.navigationItem.setRightBarButtonItem addButton
     self
   end
   
+
+
   def viewDidAppear(animated)
     @refreshControl = UIRefreshControl.alloc.init
     @refreshControl.addTarget self, action:'refresh', forControlEvents:UIControlEventValueChanged
@@ -34,6 +40,12 @@ class SubscriptionController < UITableViewController
   def tableView(tableView, numberOfRowsInSection:section)  
     @subscription.subscriptions_for_daynumber(section).count
   end      
+
+  def addDates
+    @calendarView ||= PickDateViewController.alloc.initWithNibName(nil, bundle:nil)
+    self.navigationController.pushViewController(@calendarView, animated:true)
+
+  end
 
   def refresh
     @loading = true

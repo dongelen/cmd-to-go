@@ -42,11 +42,15 @@ class AppDelegate
     @window.rootViewController =  @loginScreen
     @window.makeKeyAndVisible
   end
+
+  def facebookLogin    
+    showSecondScreen
+  end
   
   def automaticLogin(activeUser)
     activeUser.login do |succes|
       if succes
-        showSecondScreen
+        showSecondScreen        
       else
         showLogin
       end

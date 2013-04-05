@@ -1,5 +1,7 @@
 class StudentViewController < UIViewController
   def viewDidLoad
+    @facebook = Facebook.instance
+
     self.title = ""
     
     self.view.setBackgroundColor UIColor.whiteColor
@@ -109,7 +111,21 @@ class StudentViewController < UIViewController
   end
 
   def student=(s)
-    loadImage(s[:avatar_link])
+    if @facebook.permission_facebook
+      @facebook.search s[:email] do |image_url|
+        if (image_url)
+          loadImage image_url
+        else
+          loadImage s[:avatar_link]
+        end
+      end
+    else
+      loadImage(s[:avatar_link])
+    end
+
+    
+    
+
     self.title = makeName(s)
     @name.text = makeName(s)
     @email.text = s[:email]

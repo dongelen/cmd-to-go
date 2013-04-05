@@ -13,6 +13,14 @@ class StudentsViewController < UITableViewController
     self.title = "Studenten"
   end         
   
+  def viewWillAppear(animated)
+    @facebook = Facebook.instance
+    @facebook.connect do|success|
+      p "User facebook login #{success}"
+    end
+
+  end
+
   def loadStudents              
     #Afstudeerders (als vakdocent)
     BubbleWrap::HTTP.get("http://www.cmd-leeuwarden.nl/api/userlists/users.json?category=Afstudeerders (als vakdocent)") do |response|
