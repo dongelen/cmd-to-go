@@ -69,11 +69,11 @@ class SubscriptionController < UITableViewController
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)    
     day_subscriptions = @subscription.subscriptions_for_daynumber(indexPath.section)
     subscription= day_subscriptions[indexPath.row]
-    p subscription[:user]
-    studentView = StudentViewController.alloc.init
+    # p subscription[:user]
+    studentView = StudentViewController.alloc.init(subscription[:user])
     
     self.navigationController.pushViewController(studentView, animated:true)
-    studentView.student=subscription[:user]    
+    # studentView.student=subscription[:user]    
   end  
              
   

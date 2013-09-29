@@ -13,5 +13,10 @@ class Time
     end
     dn
   end
-  
+
+
+
+  def +(s)
+    Time.at (self.to_i + s)
+  end
 end

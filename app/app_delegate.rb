@@ -2,6 +2,7 @@ class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
+    # TestFlight.takeOff "3b072839-1fd6-42a0-a07e-5cae81e23d57"
 
 # App::Persistence[:succesfull_login] =false
     # Controleer op automatisch inloggen

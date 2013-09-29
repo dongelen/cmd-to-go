@@ -12,7 +12,9 @@ class Subscription
     @blockToCallAfterLoad = afterLoad
     @subscriptions = Hash.new
     # first of all, get subscription 
-    category_ids =["98","99", "100", "101"]
+    # category_ids =["98","99", "100", "101"]
+    category_ids =["116", "117", "118"] #,"116", "118"]
+
     # category_ids =["101"]
     
     @toLoad = 1        
@@ -104,6 +106,10 @@ class Subscription
     end
   
     def find_my_subscripables(data, forUser:user_id)
+      p "Net voor crash"
+      p "De data #{data}"
+
+      return unless data[:subscribables]
       data[:subscribables].each do |s|
         if s[:organizerid] == user_id
           get_subscriptions s[:api_subscriptions_link]

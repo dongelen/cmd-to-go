@@ -1,21 +1,35 @@
 class StudentViewController < UIViewController
-  def viewDidLoad
-    @facebook = Facebook.instance
 
+  ## To do 
+  # verhuizen student init
+
+  def init(student)
+    initWithNibName(nil, bundle:nil)
+
+    @student = student
+    self
+  end
+
+
+  def viewDidLoad
+    # @facebook = Facebook.instance
+    p "%%%%%%%%%%%%%%%%%%%%%%%%%%% View did load"
     self.title = ""
     
     self.view.setBackgroundColor UIColor.whiteColor
-    @name = UILabel.alloc.initWithFrame ([[115,10],[180,20]])  
+    startY = 90
+
+    @name = UILabel.alloc.initWithFrame ([[115,startY+ 10],[180,20]])  
     @name.text = ""
 
 
-    @email = UILabel.alloc.initWithFrame ([[115,40],[180,20]])  
+    @email = UILabel.alloc.initWithFrame ([[115,startY+ 40],[180,20]])  
     @email.text = ""    
 
-    @mobile = UILabel.alloc.initWithFrame ([[115,70],[180,20]])  
+    @mobile = UILabel.alloc.initWithFrame ([[115,startY+ 70],[180,20]])  
     @mobile.text = ""    
     
-    @image = UIImageView.alloc.initWithFrame([[10,10], [100,100]]) 
+    @image = UIImageView.alloc.initWithFrame([[10,startY+ 10], [100,100]]) 
     layer = @image.layer
     layer.setMasksToBounds true 
     layer.setCornerRadius 10.0
@@ -25,7 +39,7 @@ class StudentViewController < UIViewController
     
     addMessageButtons
     @call = UIButton.buttonWithType UIButtonTypeRoundedRect
-    @call.frame= [[10,140],[280,50]]
+    @call.frame= [[10,startY+ 140],[280,50]]
     @call.setTitle "Bel", forState:UIControlStateNormal
     @call.when(UIControlEventTouchUpInside) do
       phoneNumber = NSURL.alloc.initWithString "tel:"+ @phonenumber
@@ -38,6 +52,12 @@ class StudentViewController < UIViewController
     self.view.addSubview @image
     self.view.addSubview @call
     self.view.addSubview @mobile
+
+    if @student 
+      fillFields
+    end
+
+    p "%%%% end init"
   end
   
   def addMessageButtons
@@ -110,26 +130,40 @@ class StudentViewController < UIViewController
     self.dismissModalViewControllerAnimated(true)    
   end
 
+  def fillFields 
+    return unless @student
+    loadImage(@student[:avatar_link])
+    
+    
+    p "Now loading student #{@student}"
+
+    if (@name == nil) 
+      p "Paniek!"
+    end
+    self.title = makeName(@student)
+    @name.text = makeName(@student)
+    @email.text = @student[:email]
+    loadExtraInfo(@student)
+
+  end
+
   def student=(s)
-    if @facebook.permission_facebook
-      @facebook.search s[:email] do |image_url|
-        if (image_url)
-          loadImage image_url
-        else
-          loadImage s[:avatar_link]
-        end
-      end
-    else
-      loadImage(s[:avatar_link])
+    @student = s
+    if @name 
+      fillFields
     end
 
-    
-    
-
-    self.title = makeName(s)
-    @name.text = makeName(s)
-    @email.text = s[:email]
-    loadExtraInfo(s)
+    # if @facebook.permission_facebook
+    #   @facebook.search s[:email] do |image_url|
+    #     if (image_url)
+    #       loadImage image_url
+    #     else
+    #       loadImage s[:avatar_link]
+    #     end
+    #   end
+    # else
+    #   loadImage(s[:avatar_link])
+    # end
 
   end
   

@@ -1,0 +1,2 @@
+class BlankViewController < UIViewController
+end
